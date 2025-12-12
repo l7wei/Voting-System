@@ -89,13 +89,17 @@ async def forward_to_portal(userinfo: Dict[str, Any]) -> Dict[str, Any]:
         "auth_provider": "nthu",
     }
 
+    if not payload["student_id"] or not payload["name"]:
+        logging.error("NTHU response missing required identity fields")
+        raise OAuthError("Invalid user profile from NTHU", status_code=502)
+
     async with httpx.AsyncClient(timeout=10) as client:
         resp = await client.post(
             cloud_run_url,
             headers={"x-internal-api-key": shared_secret},
             json=payload,
         )
-        if resp.status_code >= 300:
+        if resp.status_code >= 400:
             raise OAuthError(
                 f"Portal handshake failed (status {resp.status_code})",
                 status_code=resp.status_code,

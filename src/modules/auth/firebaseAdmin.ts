@@ -23,7 +23,9 @@ function buildCredential() {
     !(projectId && clientEmail && privateKey) &&
     !process.env.GOOGLE_APPLICATION_CREDENTIALS
   ) {
-    throw new Error("Firebase credentials are not configured");
+    throw new Error(
+      "Firebase credentials are not configured. Provide a service account JSON or GOOGLE_APPLICATION_CREDENTIALS.",
+    );
   }
 
   return admin.credential.applicationDefault();
@@ -36,9 +38,7 @@ function getFirebaseAdminApp() {
       admin.initializeApp({ credential });
     } catch (error) {
       console.error("Firebase Admin initialization failed", error);
-      throw new Error(
-        "Failed to initialize Firebase Admin credentials",
-      );
+      throw new Error(`Failed to initialize Firebase Admin credentials: ${error}`);
     }
   }
 

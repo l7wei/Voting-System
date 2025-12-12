@@ -1,7 +1,10 @@
 import { FieldValue } from "firebase-admin/firestore";
 import { NextRequest, NextResponse } from "next/server";
 import { getAuth, getDb } from "@/src/modules/auth/firebaseAdmin";
-import { handshakePayloadSchema } from "@/src/modules/auth/types";
+import {
+  handshakePayloadSchema,
+  type HandshakePayload,
+} from "@/src/modules/auth/types";
 import { COLLECTIONS } from "@/src/modules/shared/firestore";
 
 function unauthorized(message: string) {
@@ -10,6 +13,15 @@ function unauthorized(message: string) {
 
 function isFirebaseAuthError(error: unknown): error is { code: string } {
   return typeof (error as { code?: unknown })?.code === "string";
+}
+
+function deriveUid(payload: HandshakePayload) {
+  // Prefer Google UID when available; otherwise namespace NTHU IDs to avoid collisions.
+  if (payload.google_uid && !payload.google_uid.startsWith("nthu:")) {
+    return payload.google_uid;
+  }
+
+  return `nthu:${payload.student_id}`;
 }
 
 export async function POST(req: NextRequest) {
@@ -21,9 +33,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const providedSecret =
-    req.headers.get("x-internal-api-key") ||
-    req.headers.get("x-auth-proxy-secret");
+  const providedSecret = req.headers.get("x-internal-api-key");
 
   if (providedSecret !== sharedSecret) {
     return unauthorized("Unauthorized auth proxy caller");
@@ -44,11 +54,7 @@ export async function POST(req: NextRequest) {
     const auth = getAuth();
     const db = getDb();
 
-    const nthuUid = `nthu:${payload.student_id}`;
-    const uid =
-      payload.google_uid && !payload.google_uid.startsWith("nthu:")
-        ? payload.google_uid
-        : nthuUid;
+    const uid = deriveUid(payload);
 
     // Ensure user exists in Firebase Auth
     try {
@@ -93,12 +99,16 @@ export async function POST(req: NextRequest) {
       is_verified_student:
         payload.inschool ?? existing?.is_verified_student ?? false,
       updated_at: FieldValue.serverTimestamp(),
-      ...(existingSnapshot.exists
-        ? {}
-        : { created_at: FieldValue.serverTimestamp() }),
     };
 
-    await userDocRef.set(profile, { merge: true });
+    if (existingSnapshot.exists) {
+      await userDocRef.update(profile);
+    } else {
+      await userDocRef.set(
+        { ...profile, created_at: FieldValue.serverTimestamp() },
+        { merge: true },
+      );
+    }
 
     // Issue a short-lived custom token so the frontend can exchange it for a session cookie
     const customToken = await auth.createCustomToken(uid, {
