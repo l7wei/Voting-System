@@ -27,8 +27,9 @@ function getFirebaseAdminApp() {
       const credential = buildCredential();
       admin.initializeApp({ credential });
     } catch (error) {
+      console.error("Firebase Admin initialization failed", error);
       throw new Error(
-        `Failed to initialize Firebase Admin. Check service account envs. ${error}`,
+        "Failed to initialize Firebase Admin credentials",
       );
     }
   }

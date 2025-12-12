@@ -30,7 +30,7 @@ class OAuthError(HTTPException):
 def env(name: str, required: bool = True) -> Optional[str]:
     value = os.getenv(name)
     if required and not value:
-        raise OAuthError(f"Missing required env: {name}", status_code=500)
+        raise OAuthError("Server configuration error", status_code=500)
     return value
 
 

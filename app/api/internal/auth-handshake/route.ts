@@ -29,8 +29,9 @@ export async function POST(req: NextRequest) {
   try {
     payload = handshakePayloadSchema.parse(await req.json());
   } catch (error) {
+    console.error("Invalid payload from auth proxy", error);
     return NextResponse.json(
-      { error: "Invalid payload from auth proxy", details: `${error}` },
+      { error: "Invalid payload from auth proxy" },
       { status: 400 },
     );
   }
