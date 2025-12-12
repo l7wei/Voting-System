@@ -40,7 +40,7 @@ export default function HomePage() {
 
           <div className="flex flex-col items-center justify-center gap-4 pt-4 sm:flex-row">
             <Button size="lg" asChild>
-              <Link href="/vote">
+              <Link href="/voting">
                 前往投票
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>

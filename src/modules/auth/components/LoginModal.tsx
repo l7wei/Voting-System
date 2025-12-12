@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { isDevelopment } from "@/lib/config";
+import { isDevelopment } from "@/shared/lib/config";
 
 interface LoginModalProps {
   isOpen: boolean;

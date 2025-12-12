@@ -3,8 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/shared/components/ui/button";
+import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,7 +12,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/shared/components/ui/dropdown-menu";
 import { User, Shield, LogOut, Vote, ClipboardCheck } from "lucide-react";
 
 interface UserData {
@@ -108,13 +108,13 @@ export default function Header() {
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link href="/vote">
+                    <Link href="/voting">
                       <Vote className="mr-2 h-4 w-4" />
                       投票活動
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/vote/certificate">
+                    <Link href="/voting/certificate">
                       <ClipboardCheck className="mr-2 h-4 w-4" />
                       投票證明
                     </Link>
