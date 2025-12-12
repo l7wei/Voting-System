@@ -8,6 +8,10 @@ function unauthorized(message: string) {
   return NextResponse.json({ error: message }, { status: 401 });
 }
 
+function isFirebaseAuthError(error: unknown): error is { code: string } {
+  return typeof (error as { code?: unknown })?.code === "string";
+}
+
 export async function POST(req: NextRequest) {
   const sharedSecret = process.env.AUTH_PROXY_SHARED_SECRET;
   if (!sharedSecret) {
@@ -50,8 +54,7 @@ export async function POST(req: NextRequest) {
     try {
       await auth.getUser(uid);
     } catch (error: unknown) {
-      const firebaseError = error as { code?: string };
-      if (firebaseError?.code === "auth/user-not-found") {
+      if (isFirebaseAuthError(error) && error.code === "auth/user-not-found") {
         await auth.createUser({
           uid,
           displayName: payload.name,

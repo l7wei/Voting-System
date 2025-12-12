@@ -18,6 +18,14 @@ function buildCredential() {
     });
   }
 
+  if (
+    !process.env.FIREBASE_SERVICE_ACCOUNT &&
+    !(projectId && clientEmail && privateKey) &&
+    !process.env.GOOGLE_APPLICATION_CREDENTIALS
+  ) {
+    throw new Error("Firebase credentials are not configured");
+  }
+
   return admin.credential.applicationDefault();
 }
 

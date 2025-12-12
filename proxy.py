@@ -10,6 +10,7 @@ from __future__ import annotations
 import os
 from typing import Any, Dict, Optional
 
+import logging
 import httpx
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
@@ -30,6 +31,7 @@ class OAuthError(HTTPException):
 def env(name: str, required: bool = True) -> Optional[str]:
     value = os.getenv(name)
     if required and not value:
+        logging.error("Missing required environment variable: %s", name)
         raise OAuthError("Server configuration error", status_code=500)
     return value
 

@@ -3,7 +3,10 @@ import { z } from "zod";
 export const handshakePayloadSchema = z.object({
   student_id: z
     .string()
-    .regex(/^[0-9A-Za-z]{6,}$/, "Invalid student_id format"),
+    .regex(
+      /^[0-9A-Za-z]{6,}$/,
+      "student_id must be at least 6 alphanumeric characters",
+    ),
   name: z.string().min(1),
   email: z.string().email().optional(),
   inschool: z.boolean().optional(),
