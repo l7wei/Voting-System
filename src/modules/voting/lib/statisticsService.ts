@@ -1,6 +1,6 @@
-import { Activity } from "@/shared/lib/models/Activity";
-import { Option } from "@/shared/lib/models/Option";
-import { Vote } from "@/shared/lib/models/Vote";
+import { Activity } from "@/voting/types/Activity";
+import { Option } from "@/voting/types/Option";
+import { Vote } from "@/voting/types/Vote";
 import { Document, Types } from "mongoose";
 
 interface OptionStat {
