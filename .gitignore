@@ -22,6 +22,7 @@ dist/
 .env*.local
 .env.production
 .env.development
+proxy/.env
 
 # IDE
 .vscode/
@@ -61,3 +62,14 @@ data/voterList.csv
 # Ignore entire data directory except examples
 data/*
 !data/*.example
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+firebase-admin-key.json
+
+# Migration
+data/mongodb-export/
+scripts/

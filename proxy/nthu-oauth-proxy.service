@@ -1,0 +1,25 @@
+[Unit]
+Description=NTHU OAuth Proxy Service
+After=network.target
+
+[Service]
+Type=simple
+User=your-username
+WorkingDirectory=/opt/nthu-oauth-proxy
+Environment="PATH=/opt/nthu-oauth-proxy/venv/bin"
+EnvironmentFile=/opt/nthu-oauth-proxy/.env
+ExecStart=/opt/nthu-oauth-proxy/venv/bin/uvicorn proxy:app --host 0.0.0.0 --port 8000
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+# Security hardening (optional)
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/nthu-oauth-proxy
+
+[Install]
+WantedBy=multi-user.target

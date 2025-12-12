@@ -1,0 +1,47 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user is admin
+    function isAdmin() {
+      return isAuthenticated() && 
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.roles.admin == true;
+    }
+    
+    // Helper function to check if user is verified student
+    function isVerifiedStudent() {
+      return isAuthenticated() && 
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.inschool == true;
+    }
+    
+    // Users collection
+    match /users/{userId} {
+      // Users can read their own data
+      allow read: if isAuthenticated() && request.auth.uid == userId;
+      // Only backend can write user data (via admin SDK)
+      allow write: if false;
+    }
+    
+    // Voting campaigns
+    match /modules_voting_campaigns/{campaignId} {
+      // Anyone can read campaigns (public)
+      allow read: if true;
+      // Only admins can create, update, or delete
+      allow create, update, delete: if isAdmin();
+    }
+    
+    // Voting ballots (anonymous)
+    match /modules_voting_ballots/{ballotId} {
+      // Only admins can read ballots (for statistics)
+      allow read: if isAdmin();
+      // Only verified students can create ballots
+      allow create: if isVerifiedStudent();
+      // Ballots are immutable - no updates or deletes
+      allow update, delete: if false;
+    }
+  }
+}

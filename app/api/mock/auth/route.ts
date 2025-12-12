@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { isProduction } from "@/lib/config";
+import { isProduction } from "@/shared/lib/config";
 
 export async function GET(request: NextRequest) {
   // Disable mock API in production

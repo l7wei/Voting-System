@@ -4,14 +4,14 @@ import {
   requireAdmin,
   createErrorResponse,
   createSuccessResponse,
-} from "@/lib/middleware";
-import { loadVoterList, isStudentEligible } from "@/lib/voterList";
-import { Vote } from "@/lib/models/Vote";
-import connectDB from "@/lib/db";
-import { createVote } from "@/lib/votingService";
-import { isValidRule } from "@/lib/validation";
-import { validatePagination } from "@/lib/validation";
-import { API_CONSTANTS } from "@/lib/constants";
+} from "@/auth/lib/middleware";
+import { loadVoterList, isStudentEligible } from "@/voting/lib/voterList";
+import { Vote } from "@/voting/types/Vote";
+import connectDB from "@/shared/lib/db";
+import { createVote } from "@/voting/lib/votingService";
+import { isValidRule } from "@/shared/lib/validation";
+import { validatePagination } from "@/shared/lib/validation";
+import { API_CONSTANTS } from "@/shared/lib/constants";
 
 // Configure API route
 export const config = {

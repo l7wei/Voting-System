@@ -20,7 +20,14 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@/modules/*": ["./src/modules/*"],
+      "@/shared": ["./src/modules/shared"],
+      "@/shared/*": ["./src/modules/shared/*"],
+      "@/auth": ["./src/modules/auth"],
+      "@/auth/*": ["./src/modules/auth/*"],
+      "@/voting": ["./src/modules/voting"],
+      "@/voting/*": ["./src/modules/voting/*"]
     }
   },
   "include": [
@@ -30,5 +37,5 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules", ".backup"]
+  "exclude": ["node_modules", ".backup", "__tests__"]
 }

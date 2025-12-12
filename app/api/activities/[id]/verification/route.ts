@@ -4,11 +4,11 @@ import {
   requireAdmin,
   createErrorResponse,
   createSuccessResponse,
-} from "@/lib/middleware";
-import { Vote } from "@/lib/models/Vote";
-import connectDB from "@/lib/db";
-import { isValidObjectId } from "@/lib/validation";
-import { API_CONSTANTS } from "@/lib/constants";
+} from "@/auth/lib/middleware";
+import { Vote } from "@/voting/types/Vote";
+import connectDB from "@/shared/lib/db";
+import { isValidObjectId } from "@/shared/lib/validation";
+import { API_CONSTANTS } from "@/shared/lib/constants";
 
 // GET /api/activities/[id]/verification - Get voted UUIDs for verification (Admin only)
 export async function GET(

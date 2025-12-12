@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { Activity } from "@/types";
-import { fetchActiveActivities } from "@/lib/activities";
+import { fetchActiveActivities } from "@/shared/lib/activities";
 
 interface UseActivitiesReturn {
   activities: Activity[];
