@@ -1,0 +1,41 @@
+import admin from "firebase-admin";
+
+function buildCredential() {
+  if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+    const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+    return admin.credential.cert(serviceAccount);
+  }
+
+  const projectId = process.env.FIREBASE_PROJECT_ID;
+  const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+  const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n");
+
+  if (projectId && clientEmail && privateKey) {
+    return admin.credential.cert({
+      projectId,
+      clientEmail,
+      privateKey,
+    });
+  }
+
+  return admin.credential.applicationDefault();
+}
+
+function getFirebaseAdminApp() {
+  if (!admin.apps.length) {
+    const credential = buildCredential();
+    admin.initializeApp({ credential });
+  }
+
+  return admin.app();
+}
+
+export function getAuth() {
+  return getFirebaseAdminApp().auth();
+}
+
+export function getDb() {
+  return getFirebaseAdminApp().firestore();
+}
+
+export type FirebaseAdminApp = ReturnType<typeof getFirebaseAdminApp>;
