@@ -1,9 +1,9 @@
-import { Activity } from "@/lib/models/Activity";
-import { Option } from "@/lib/models/Option";
-import { Vote } from "@/lib/models/Vote";
+import { Activity } from "@/shared/lib/models/Activity";
+import { Option } from "@/shared/lib/models/Option";
+import { Vote } from "@/shared/lib/models/Vote";
 import { IChoiceAll } from "@/types";
-import { isValidRemark } from "@/lib/validation";
-import { API_CONSTANTS } from "@/lib/constants";
+import { isValidRemark } from "@/shared/lib/validation";
+import { API_CONSTANTS } from "@/shared/lib/constants";
 import { v4 as uuidv4 } from "uuid";
 import { Document, Types } from "mongoose";
 

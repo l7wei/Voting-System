@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getRequiredEnvVar } from "./config";
+import { getRequiredEnvVar } from "@/shared/lib/config";
 import { OAuthTokenResponse, OAuthUserInfo } from "@/types";
 
 export function getAuthorizationURL(redirect?: string): string {

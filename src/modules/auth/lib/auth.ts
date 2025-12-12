@@ -2,10 +2,10 @@ import "server-only";
 import { readFile } from "fs/promises";
 import { join } from "path";
 import { parse } from "csv-parse/sync";
-import { API_CONSTANTS } from "@/lib/constants";
+import { API_CONSTANTS } from "@/shared/lib/constants";
 
 // 1. 重新導出 JWT 相關功能 (保持 JWT 邏輯獨立是好的，因為它是純運算)
-export { generateToken, verifyToken } from "@/lib/jwt";
+export { generateToken, verifyToken } from "@/auth/lib/jwt";
 
 // --------------------------------------------------------
 // 2. Admin 權限檢查邏輯 (原 adminConfig.ts 的內容)
