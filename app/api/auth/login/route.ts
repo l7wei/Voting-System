@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAuthorizationURL } from "@/lib/oauth";
+import { getAuthorizationURL } from "@/auth/lib/oauth";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;

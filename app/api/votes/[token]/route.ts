@@ -3,9 +3,9 @@ import {
   requireAuth,
   createErrorResponse,
   createSuccessResponse,
-} from "@/lib/middleware";
-import { Vote } from "@/lib/models/Vote";
-import connectDB from "@/lib/db";
+} from "@/auth/lib/middleware";
+import { Vote } from "@/voting/types/Vote";
+import connectDB from "@/shared/lib/db";
 
 /**
  * GET /api/votes/[token]

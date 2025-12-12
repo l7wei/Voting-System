@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { ActivityWithOptions } from "@/types";
-import { fetchActivity } from "@/lib/activities";
+import { fetchActivity } from "@/shared/lib/activities";
 
 interface UseActivityReturn {
   activity: ActivityWithOptions | null;

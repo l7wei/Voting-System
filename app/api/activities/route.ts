@@ -4,15 +4,15 @@ import {
   requireAdmin,
   createErrorResponse,
   createSuccessResponse,
-} from "@/lib/middleware";
-import { Activity } from "@/lib/models/Activity";
-import connectDB from "@/lib/db";
+} from "@/auth/lib/middleware";
+import { Activity } from "@/voting/types/Activity";
+import connectDB from "@/shared/lib/db";
 import {
   validateDateRange,
   isValidRule,
   validateRequiredFields,
-} from "@/lib/validation";
-import { API_CONSTANTS } from "@/lib/constants";
+} from "@/shared/lib/validation";
+import { API_CONSTANTS } from "@/shared/lib/constants";
 
 // Configure API route
 export const config = {

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import { Plus, X } from "lucide-react";
 import { CandidateForm } from "./types";
 import { CandidateFormFields } from "./CandidateFormFields";

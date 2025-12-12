@@ -4,11 +4,11 @@ import {
   requireAdmin,
   createErrorResponse,
   createSuccessResponse,
-} from "@/lib/middleware";
-import connectDB from "@/lib/db";
-import { calculateActivityStatistics } from "@/lib/statisticsService";
-import { isValidObjectId } from "@/lib/validation";
-import { API_CONSTANTS } from "@/lib/constants";
+} from "@/auth/lib/middleware";
+import connectDB from "@/shared/lib/db";
+import { calculateActivityStatistics } from "@/voting/lib/statisticsService";
+import { isValidObjectId } from "@/shared/lib/validation";
+import { API_CONSTANTS } from "@/shared/lib/constants";
 
 // GET /api/stats?activity_id=xxx - Get statistics for an activity (Admin only)
 export async function GET(request: NextRequest) {

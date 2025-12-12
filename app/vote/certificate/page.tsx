@@ -2,15 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Header from "@/components/Header";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import Header from "@/auth/components/Header";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
+import { Badge } from "@/shared/components/ui/badge";
 import { CheckCircle2, Download, Home, Copy, Check, User, Trash2 } from "lucide-react";
-import { loadVotingHistory, clearVotingHistory, removeVoteRecordByToken } from "@/lib/votingHistory";
+import { loadVotingHistory, clearVotingHistory, removeVoteRecordByToken } from "@/voting/lib/votingHistory";
 import { VotingHistory } from "@/types";
 import { useUser } from "@/hooks";
-import { API_CONSTANTS } from "@/lib/constants";
+import { API_CONSTANTS } from "@/shared/lib/constants";
 
 export default function CompletionPage() {
   const router = useRouter();

@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { exchangeCodeForToken, getUserInfo } from "@/lib/oauth";
-import { generateToken } from "@/lib/auth";
-import { API_CONSTANTS } from "@/lib/constants";
-import { getBaseURL, isProduction } from "@/lib/config";
+import { exchangeCodeForToken, getUserInfo } from "@/auth/lib/oauth";
+import { generateToken } from "@/auth/lib/auth";
+import { API_CONSTANTS } from "@/shared/lib/constants";
+import { getBaseURL, isProduction } from "@/shared/lib/config";
 
 export async function GET(request: NextRequest) {
   try {

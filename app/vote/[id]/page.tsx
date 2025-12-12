@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Loading } from "@/components/ui/loader";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
+import { Badge } from "@/shared/components/ui/badge";
+import { Separator } from "@/shared/components/ui/separator";
+import { Loading } from "@/shared/components/ui/loader";
 import {
   CheckCircle2,
   Tag,
@@ -16,11 +16,11 @@ import {
   AlertCircle,
   Info,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { saveVotingRecord, getVotesByActivityId } from "@/lib/votingHistory";
+import { cn } from "@/shared/lib/utils";
+import { saveVotingRecord, getVotesByActivityId } from "@/voting/lib/votingHistory";
 import { Candidate, IChoiceAll } from "@/types";
 import { useActivity, useUser } from "@/hooks";
-import { API_CONSTANTS } from "@/lib/constants";
+import { API_CONSTANTS } from "@/shared/lib/constants";
 
 export default function VotingPage() {
   const params = useParams();

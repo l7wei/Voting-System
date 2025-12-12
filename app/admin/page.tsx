@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import Header from "@/components/Header";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Loading } from "@/components/ui/loader";
+import Header from "@/auth/components/Header";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
+import { Separator } from "@/shared/components/ui/separator";
+import { Loading } from "@/shared/components/ui/loader";
 import {
   Table,
   TableBody,
@@ -13,7 +13,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/shared/components/ui/table";
 import {
   Plus,
   RefreshCw,
@@ -26,8 +26,8 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { useAdminAccess, useAdminActivities } from "@/hooks";
-import { ActivityStatusBadge } from "@/components/ActivityStatusBadge";
-import { getActivityStatus } from "@/lib/activities";
+import { ActivityStatusBadge } from "@/voting/components/ActivityStatusBadge";
+import { getActivityStatus } from "@/voting/lib/activities";
 
 function AdminDashboardContent() {
   const { activities, loading, error, refetch } = useAdminActivities();

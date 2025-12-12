@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { mockAuthStore } from "@/lib/mockAuthStore";
-import { isProduction } from "@/lib/config";
+import { mockAuthStore } from "@/auth/lib/mockAuthStore";
+import { isProduction } from "@/shared/lib/config";
 
 export async function POST(request: NextRequest) {
   // Disable mock API in production

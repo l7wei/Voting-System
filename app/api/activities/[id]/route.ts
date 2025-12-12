@@ -4,16 +4,16 @@ import {
   requireAdmin,
   createErrorResponse,
   createSuccessResponse,
-} from "@/lib/middleware";
-import { Activity } from "@/lib/models/Activity";
-import { Option } from "@/lib/models/Option";
-import connectDB from "@/lib/db";
+} from "@/auth/lib/middleware";
+import { Activity } from "@/voting/types/Activity";
+import { Option } from "@/voting/types/Option";
+import connectDB from "@/shared/lib/db";
 import {
   isValidObjectId,
   validateDateRange,
   isValidRule,
-} from "@/lib/validation";
-import { API_CONSTANTS } from "@/lib/constants";
+} from "@/shared/lib/validation";
+import { API_CONSTANTS } from "@/shared/lib/constants";
 
 // Configure API route
 export const config = {

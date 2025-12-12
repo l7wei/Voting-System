@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import Header from "@/components/Header";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Loading } from "@/components/ui/loader";
+import Header from "@/auth/components/Header";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
+import { Badge } from "@/shared/components/ui/badge";
+import { Loading } from "@/shared/components/ui/loader";
 import {
   Calendar,
   Tag,
@@ -13,9 +13,9 @@ import {
   ArrowLeft,
   AlertCircle,
 } from "lucide-react";
-import { hasVoted } from "@/lib/votingHistory";
+import { hasVoted } from "@/voting/lib/votingHistory";
 import { useActivities, useUser } from "@/hooks";
-import { ActivityStatusBadge } from "@/components/ActivityStatusBadge";
+import { ActivityStatusBadge } from "@/voting/components/ActivityStatusBadge";
 
 export default function VotePage() {
   const { activities, loading, error } = useActivities();

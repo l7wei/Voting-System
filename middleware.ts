@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { verifyToken } from "@/lib/jwt";
-import { isProduction } from "@/lib/config";
+import { verifyToken } from "@/auth/lib/jwt";
+import { isProduction } from "@/shared/lib/config";
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;

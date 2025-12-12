@@ -2,8 +2,8 @@
 
 import { Suspense, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loading } from "@/components/ui/loader";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Loading } from "@/shared/components/ui/loader";
 
 function LoginContent() {
   const searchParams = useSearchParams();

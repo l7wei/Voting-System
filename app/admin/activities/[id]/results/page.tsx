@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { useParams } from "next/navigation";
-import Header from "@/components/Header";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Loading } from "@/components/ui/loader";
-import { Separator } from "@/components/ui/separator";
+import Header from "@/auth/components/Header";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
+import { Loading } from "@/shared/components/ui/loader";
+import { Separator } from "@/shared/components/ui/separator";
 import Link from "next/link";
 import { ArrowLeft, TrendingUp, Users, Award, AlertCircle } from "lucide-react";
 import { useAdminAccess } from "@/hooks";

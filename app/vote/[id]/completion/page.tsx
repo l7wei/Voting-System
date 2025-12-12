@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import Header from "@/components/Header";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import Header from "@/auth/components/Header";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
 import { CheckCircle2, ArrowLeft } from "lucide-react";
-import { getVotedActivityIds } from "@/lib/votingHistory";
+import { getVotedActivityIds } from "@/voting/lib/votingHistory";
 import { useActivities, useUser } from "@/hooks";
 
 export default function CompletionPage() {

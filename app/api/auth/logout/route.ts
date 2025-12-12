@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getBaseURL, isProduction } from "@/lib/config";
+import { getBaseURL, isProduction } from "@/shared/lib/config";
 
 export async function GET() {
   const response = NextResponse.redirect(
