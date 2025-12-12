@@ -95,7 +95,7 @@ async def forward_to_portal(userinfo: Dict[str, Any]) -> Dict[str, Any]:
         )
         if resp.status_code >= 300:
             raise OAuthError(
-                f"Portal handshake failed: {resp.status_code} {resp.text}",
+                f"Portal handshake failed (status {resp.status_code})",
                 status_code=resp.status_code,
             )
         return resp.json()

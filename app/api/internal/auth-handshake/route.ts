@@ -48,8 +48,9 @@ export async function POST(req: NextRequest) {
     // Ensure user exists in Firebase Auth
     try {
       await auth.getUser(uid);
-    } catch (error: any) {
-      if (error?.code === "auth/user-not-found") {
+    } catch (error: unknown) {
+      const firebaseError = error as { code?: string };
+      if (firebaseError?.code === "auth/user-not-found") {
         await auth.createUser({
           uid,
           displayName: payload.name,
@@ -101,21 +102,11 @@ export async function POST(req: NextRequest) {
       inschool: payload.inschool ?? false,
     });
 
-    const response = NextResponse.json({
+    return NextResponse.json({
       ok: true,
       uid,
       customToken,
     });
-
-    response.cookies.set("portal_session", customToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60, // 1 hour
-    });
-
-    return response;
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to complete auth handshake", details: `${error}` },

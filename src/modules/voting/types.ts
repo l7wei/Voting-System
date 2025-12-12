@@ -13,7 +13,6 @@ export type VotingCampaign = {
 export type VotingBallot = {
   id?: string;
   campaign_id: string;
-  uid: string;
   token: string;
   rule: "choose_all" | "choose_one";
   choose_all?: { option_id: string; remark: string }[];
