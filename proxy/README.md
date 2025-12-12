@@ -79,7 +79,108 @@ Visit `http://localhost:8000` - you should see:
 
 ## Deployment
 
-### Option 1: Systemd Service (Recommended)
+### Option 1: Docker (Recommended)
+
+#### Using Docker Compose
+
+1. Copy files to your VM:
+
+```bash
+sudo mkdir -p /opt/nthu-oauth-proxy
+sudo chown $USER:$USER /opt/nthu-oauth-proxy
+cd /opt/nthu-oauth-proxy
+
+# Copy these files:
+# - proxy.py
+# - requirements.txt
+# - Dockerfile
+# - docker-compose.yml
+# - .env.example
+```
+
+2. Configure environment:
+
+```bash
+cp .env.example .env
+nano .env
+```
+
+Fill in your configuration as described above.
+
+3. Build and start:
+
+```bash
+docker-compose up -d
+```
+
+4. Check status:
+
+```bash
+docker-compose ps
+docker-compose logs -f
+```
+
+5. Stop:
+
+```bash
+docker-compose down
+```
+
+#### Using Docker (without compose)
+
+1. Build the image:
+
+```bash
+docker build -t nthu-oauth-proxy .
+```
+
+2. Run the container:
+
+```bash
+docker run -d \
+  --name nthu-oauth-proxy \
+  --restart unless-stopped \
+  -p 8000:8000 \
+  --env-file .env \
+  nthu-oauth-proxy
+```
+
+3. Check logs:
+
+```bash
+docker logs -f nthu-oauth-proxy
+```
+
+4. Stop and remove:
+
+```bash
+docker stop nthu-oauth-proxy
+docker rm nthu-oauth-proxy
+```
+
+#### Docker with Nginx
+
+If using Nginx as reverse proxy, create a docker network:
+
+```bash
+docker network create oauth-network
+```
+
+Then run both containers in the same network:
+
+```bash
+# Run proxy
+docker run -d \
+  --name nthu-oauth-proxy \
+  --network oauth-network \
+  --restart unless-stopped \
+  --env-file .env \
+  nthu-oauth-proxy
+
+# Nginx will proxy to http://nthu-oauth-proxy:8000
+```
+
+### Option 2: Systemd Service
 
 1. Copy the service file:
 

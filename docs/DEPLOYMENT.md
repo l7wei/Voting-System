@@ -247,7 +247,9 @@ Store the Cloud Run URL - you'll need it for the VM proxy configuration.
 
 ## Part 3: VM Proxy Deployment
 
-### 1. Set Up VM
+### Option A: Docker Deployment (Recommended)
+
+#### 1. Set Up VM with Docker
 
 SSH into your static IP VM:
 
@@ -255,23 +257,37 @@ SSH into your static IP VM:
 ssh user@your-static-ip-vm
 ```
 
-### 2. Install Python and Dependencies
+#### 2. Install Docker
 
 ```bash
 # Update system
 sudo apt update
-sudo apt install -y python3 python3-pip python3-venv
 
+# Install Docker
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+
+# Install Docker Compose
+sudo apt install -y docker-compose
+
+# Add user to docker group (optional, to run without sudo)
+sudo usermod -aG docker $USER
+# Log out and back in for this to take effect
+```
+
+#### 3. Set Up Proxy Files
+
+```bash
 # Create app directory
 sudo mkdir -p /opt/nthu-oauth-proxy
 sudo chown $USER:$USER /opt/nthu-oauth-proxy
 cd /opt/nthu-oauth-proxy
 
 # Copy proxy files
-# Upload proxy.py, requirements.txt, .env.example to this directory
+# Upload: proxy.py, requirements.txt, Dockerfile, docker-compose.yml, .env.example
 ```
 
-### 3. Configure Environment
+#### 4. Configure Environment
 
 ```bash
 cp .env.example .env
@@ -291,7 +307,116 @@ FRONTEND_URL=https://your-domain.com
 PORT=8000
 ```
 
-### 4. Install Dependencies
+#### 5. Deploy with Docker Compose
+
+```bash
+# Build and start
+docker-compose up -d
+
+# Check status
+docker-compose ps
+docker-compose logs -f
+
+# The service will auto-restart on VM reboot
+```
+
+#### 6. Verify Deployment
+
+```bash
+# Test health endpoint
+curl http://localhost:8000/
+
+# Should return:
+# {"status":"healthy","service":"NTHU OAuth Proxy","version":"1.0.0"}
+```
+
+#### 7. Configure Nginx (Optional but Recommended)
+
+Install Nginx:
+
+```bash
+sudo apt install -y nginx certbot python3-certbot-nginx
+```
+
+Create `/etc/nginx/sites-available/nthu-oauth-proxy`:
+
+```nginx
+server {
+    listen 80;
+    server_name voting.nthusa.tw;
+
+    location / {
+        proxy_pass http://localhost:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+Enable and get SSL:
+
+```bash
+sudo ln -s /etc/nginx/sites-available/nthu-oauth-proxy /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl reload nginx
+sudo certbot --nginx -d voting.nthusa.tw
+```
+
+#### 8. Manage the Service
+
+```bash
+# View logs
+docker-compose logs -f
+
+# Restart
+docker-compose restart
+
+# Stop
+docker-compose down
+
+# Update (after code changes)
+docker-compose down
+docker-compose up -d --build
+```
+
+### Option B: Systemd Service (Traditional)
+
+#### 1. Set Up VM
+
+SSH into your static IP VM:
+
+```bash
+ssh user@your-static-ip-vm
+```
+
+#### 2. Install Python and Dependencies
+
+```bash
+# Update system
+sudo apt update
+sudo apt install -y python3 python3-pip python3-venv
+
+# Create app directory
+sudo mkdir -p /opt/nthu-oauth-proxy
+sudo chown $USER:$USER /opt/nthu-oauth-proxy
+cd /opt/nthu-oauth-proxy
+
+# Copy proxy files
+# Upload proxy.py, requirements.txt, .env.example to this directory
+```
+
+#### 3. Configure Environment
+
+```bash
+cp .env.example .env
+nano .env
+```
+
+Fill in `.env` as shown in Option A above.
+
+#### 4. Install Dependencies
 
 ```bash
 python3 -m venv venv
@@ -299,7 +424,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 5. Create Systemd Service
+#### 5. Create Systemd Service
 
 Create `/etc/systemd/system/nthu-oauth-proxy.service`:
 
@@ -331,7 +456,7 @@ sudo systemctl start nthu-oauth-proxy
 sudo systemctl status nthu-oauth-proxy
 ```
 
-### 6. Configure Nginx (Optional but Recommended)
+#### 6. Configure Nginx (Optional but Recommended)
 
 Install Nginx:
 
