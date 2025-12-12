@@ -226,11 +226,13 @@ export async function submitVote(
     await firestore.collection(BALLOTS_COLLECTION).doc(ballotId).set(ballot);
 
     // Update campaign participation (tracks who voted, not what they voted)
+    // Use Firestore arrayUnion for atomic operation
+    const { FieldValue } = await import("firebase-admin/firestore");
     await firestore
       .collection(CAMPAIGNS_COLLECTION)
       .doc(campaignId)
       .update({
-        participated_voters: [...campaign.participated_voters, studentId],
+        participated_voters: FieldValue.arrayUnion(studentId),
         updated_at: now,
       });
 

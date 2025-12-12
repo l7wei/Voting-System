@@ -25,17 +25,44 @@ import { cookies } from "next/headers";
 
 /**
  * Get current user from session
- * This is a helper function - in production, you'd verify the session cookie
+ * 
+ * IMPLEMENTATION NOTE:
+ * This function needs to be completed in Phase 3 (Authentication Integration).
+ * 
+ * The proper implementation should:
+ * 1. Get the session cookie from the request
+ * 2. Verify it using Firebase Auth's verifySessionCookie()
+ * 3. Extract the UID from the decoded token
+ * 4. Fetch the user from Firestore using getUserByUid()
+ * 
+ * Example implementation:
+ * ```typescript
+ * const sessionCookie = cookies().get("session")?.value;
+ * if (!sessionCookie) return null;
+ * 
+ * try {
+ *   const decodedToken = await firebaseAuth.verifySessionCookie(sessionCookie, true);
+ *   return await getUserByUid(decodedToken.uid);
+ * } catch (error) {
+ *   console.error("Session verification failed:", error);
+ *   return null;
+ * }
+ * ```
+ * 
+ * SECURITY IMPACT:
+ * Until this is implemented, all Server Actions in this module that require
+ * authentication will fail. This is intentional to prevent unauthorized access.
+ * The application should use the legacy auth system (JWT) until migration is complete.
  */
 async function getCurrentUser() {
-  // TODO: Implement proper session verification
-  // For now, this is a placeholder
+  // TODO: Implement proper session verification in Phase 3
+  // For now, this returns null to prevent unauthorized access
   const sessionCookie = cookies().get("session");
   if (!sessionCookie) {
     return null;
   }
 
-  // In production, verify the session cookie and get the user
+  // Placeholder - will be implemented in Phase 3
   // const decodedToken = await firebaseAuth.verifySessionCookie(sessionCookie.value);
   // return getUserByUid(decodedToken.uid);
 

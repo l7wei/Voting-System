@@ -303,11 +303,15 @@ export async function createOrUpdateUserFromNTHU(
       // Create new user from NTHU OAuth
       const userRecord = await firebaseAuth.createUser({
         displayName: name,
+        // Use a proper email format for NTHU users
+        // This follows the pattern: studentid@m{year}.nthu.edu.tw
+        // which is similar to actual NTHU student email format
+        email: `${student_id}@m${student_id.substring(0, 3)}.nthu.edu.tw`,
       });
 
       const newUser: FirestoreUser = {
         uid: userRecord.uid,
-        email: `${student_id}@placeholder.edu`, // Placeholder email
+        email: `${student_id}@m${student_id.substring(0, 3)}.nthu.edu.tw`,
         name,
         inschool,
         student_id,

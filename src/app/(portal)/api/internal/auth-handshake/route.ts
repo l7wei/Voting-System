@@ -36,9 +36,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Prevent replay attacks - check timestamp
+    // Only allow recent past timestamps (not future)
     const now = Date.now();
-    if (Math.abs(now - body.timestamp) > MAX_TIMESTAMP_DIFF) {
-      console.error("Timestamp too old or in future");
+    const timeDiff = now - body.timestamp;
+    
+    if (timeDiff > MAX_TIMESTAMP_DIFF || timeDiff < 0) {
+      console.error("Timestamp too old or in future", { timeDiff, now, requestTimestamp: body.timestamp });
       return NextResponse.json(
         { error: "Invalid timestamp" },
         { status: 400 }

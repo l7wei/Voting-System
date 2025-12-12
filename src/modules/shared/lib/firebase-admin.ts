@@ -34,13 +34,11 @@ function initializeFirebaseAdmin() {
       });
 
       // Set emulator hosts if specified
-      if (process.env.FIRESTORE_EMULATOR_HOST) {
-        process.env.FIRESTORE_EMULATOR_HOST =
-          process.env.FIRESTORE_EMULATOR_HOST || "localhost:8080";
+      if (!process.env.FIRESTORE_EMULATOR_HOST) {
+        process.env.FIRESTORE_EMULATOR_HOST = "localhost:8080";
       }
-      if (process.env.FIREBASE_AUTH_EMULATOR_HOST) {
-        process.env.FIREBASE_AUTH_EMULATOR_HOST =
-          process.env.FIREBASE_AUTH_EMULATOR_HOST || "localhost:9099";
+      if (!process.env.FIREBASE_AUTH_EMULATOR_HOST) {
+        process.env.FIREBASE_AUTH_EMULATOR_HOST = "localhost:9099";
       }
     }
   } else {
