@@ -64,7 +64,7 @@ export default function CompletionPage() {
               <p className="mb-6 text-muted-foreground">
                 您還沒有參與任何投票活動
               </p>
-              <Button onClick={() => router.push("/vote")}>前往投票</Button>
+              <Button onClick={() => router.push("/voting")}>前往投票</Button>
             </CardContent>
           </Card>
         </main>
@@ -267,7 +267,7 @@ export default function CompletionPage() {
           <Button
             variant="outline"
             className="w-full"
-            onClick={() => router.push("/vote")}
+            onClick={() => router.push("/voting")}
           >
             前往投票
           </Button>

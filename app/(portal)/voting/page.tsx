@@ -140,12 +140,12 @@ export default function VotePage() {
                           已完成投票
                         </Badge>
                         <Button className="w-full" variant="outline" asChild>
-                          <Link href={`/vote/${activity._id}`}>查看詳情</Link>
+                          <Link href={`/voting/${activity._id}`}>查看詳情</Link>
                         </Button>
                       </div>
                     ) : (
                       <Button className="w-full" asChild>
-                        <Link href={`/vote/${activity._id}`}>開始投票</Link>
+                        <Link href={`/voting/${activity._id}`}>開始投票</Link>
                       </Button>
                     )}
                   </div>

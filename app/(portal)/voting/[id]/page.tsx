@@ -177,7 +177,7 @@ export default function VotingPage() {
 
         // Redirect to completion page
         router.push(
-          `/vote/${activityId}/completion?token=${data.data.token}&name=${encodeURIComponent(activity.name)}`,
+          `/voting/${activityId}/completion?token=${data.data.token}&name=${encodeURIComponent(activity.name)}`,
         );
       } else {
         // Check if user has already voted
@@ -290,7 +290,7 @@ export default function VotingPage() {
         <Card className="w-full max-w-md">
           <CardContent className="py-12 text-center">
             <h2 className="mb-4 text-2xl font-bold">找不到投票活動</h2>
-            <Button onClick={() => router.push("/vote")}>返回投票列表</Button>
+            <Button onClick={() => router.push("/voting")}>返回投票列表</Button>
           </CardContent>
         </Card>
       </div>
@@ -462,7 +462,7 @@ export default function VotingPage() {
         {/* Submit Button */}
         <div className="flex gap-4">
           <Button
-            onClick={() => router.push("/vote")}
+            onClick={() => router.push("/voting")}
             variant="outline"
             size="lg"
             className="flex-1"

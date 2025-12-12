@@ -135,7 +135,7 @@ export default function CompletionPage() {
                 size="lg"
                 variant="outline"
                 className="flex-1"
-                onClick={() => router.push("/vote")}
+                onClick={() => router.push("/voting")}
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 返回投票列表
@@ -143,7 +143,7 @@ export default function CompletionPage() {
               <Button
                 size="lg"
                 className="flex-1"
-                onClick={() => router.push("/vote/certificate")}
+                onClick={() => router.push("/voting/certificate")}
               >
                 查看投票證明
               </Button>
@@ -164,7 +164,7 @@ export default function CompletionPage() {
                 size="lg"
                 variant="outline"
                 className="flex-1"
-                onClick={() => router.push("/vote")}
+                onClick={() => router.push("/voting")}
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 返回投票列表
@@ -172,7 +172,7 @@ export default function CompletionPage() {
               <Button
                 size="lg"
                 className="flex-1"
-                onClick={() => router.push(`/vote/${nextActivity._id}`)}
+                onClick={() => router.push(`/voting/${nextActivity._id}`)}
               >
                 繼續投票
               </Button>
@@ -182,7 +182,7 @@ export default function CompletionPage() {
           <Button
             size="lg"
             className="w-full"
-            onClick={() => router.push("/vote")}
+            onClick={() => router.push("/voting")}
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             返回投票列表
