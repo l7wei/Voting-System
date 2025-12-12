@@ -1,13 +1,14 @@
-# NTHU Voting System v2.0
+# NTHU Student Portal (Voting System v2.0+)
 
-Anonymous voting system for National Tsing Hua University Student Association.
+Modular portal for National Tsing Hua University Student Association, evolving from the voting system to support future modules on Firebase (Hosting + Cloud Run).
 
 ## Stack
 
 - **Framework**: Next.js 15 (App Router)
 - **Language**: TypeScript
-- **Database**: MongoDB 6 with Mongoose 8
-- **Authentication**: OAuth (CCXP) + JWT
+- **Database**: Firestore (server access via `firebase-admin`)
+- **Authentication**: Firebase Auth (Google) + NTHU OAuth via VM proxy
+- **Hosting**: Firebase Hosting (static) + Cloud Run (SSR / API)
 - **Styling**: Tailwind CSS
 
 ## Core Features
@@ -52,6 +53,18 @@ npm run dev
 Access at http://localhost:3000
 
 **Development Mode**: Uses Mock OAuth by default (no real OAuth provider needed)
+
+### Portal Architecture (Modular Monolith)
+
+- Feature-first modules under `src/modules/*`
+- Portal shell in `src/app/(portal)/`
+- Legacy voting routes remain in `/app` until migrated
+- Shared Firestore collections:
+  - `users`
+  - `modules_voting_campaigns`
+  - `modules_voting_ballots`
+
+See detailed guides in `docs/DEVELOPMENT.md` and `docs/DEPLOYMENT.md`.
 
 ### Production Deployment
 
@@ -155,40 +168,28 @@ student_id
 
 ## Architecture
 
-### Anonymity Model
+### Data (Firestore)
+- `users`: `{ uid, email, name, inschool, student_id, roles { admin, student }, auth_providers, is_verified_student, created_at, updated_at }`
+- `modules_voting_campaigns`: campaign metadata and options
+- `modules_voting_ballots`: anonymized ballots per campaign (no voter choice linkage to identity)
 
-**Vote Record (votes collection)** - No voter identification:
+### Hybrid Authentication (Google + NTHU)
+1. User selects **Login with NTHU**.
+2. NTHU OAuth callback hits the VM at `voting.nthusa.tw/callback` (see `proxy.py`).
+3. Proxy exchanges code → fetches user profile → POSTs to Cloud Run endpoint `/api/internal/auth-handshake` with `x-internal-api-key`.
+4. Cloud Run (firebase-admin) upserts Firestore user and returns a Firebase custom token; frontend exchanges it for a session cookie.
+5. Users can later bind Google and NTHU identities via shared `uid`.
 
-```typescript
-{
-  activity_id: ObjectId,
-  rule: 'choose_all' | 'choose_one',
-  choose_all?: [{ option_id, remark }],
-  choose_one?: ObjectId,
-  token: string,  // UUID - anonymous
-  created_at: Date
-}
+### Modular Monolith Layout
 ```
-
-**Activity Record (activities collection)** - Tracks participation only:
-
-```typescript
-{
-  name: string,
-  rule: 'choose_all' | 'choose_one',
-  users: string[],  // Student IDs who voted (not their choices)
-  options: ObjectId[],
-  open_from: Date,
-  open_to: Date
-}
+src/
+  app/(portal)/      # Portal layout & shell
+  modules/
+    auth/            # Auth proxy handshake, firebase-admin helpers
+    voting/          # Campaign/ballot logic
+    shared/          # Cross-cutting utilities and types
+app/                 # Legacy routes (migration in progress)
 ```
-
-### Authentication Flow
-
-1. User accesses protected resource → Redirected to login
-2. OAuth authorization with CCXP
-3. JWT token issued and stored in secure cookie
-4. Subsequent requests authenticated via JWT
 
 ## API Endpoints
 
@@ -198,6 +199,7 @@ student_id
 - `GET /api/auth/callback` - OAuth callback
 - `GET /api/auth/check` - Check auth status
 - `GET /api/auth/logout` - Logout
+- `POST /api/internal/auth-handshake` - Internal endpoint for VM proxy (secured with `AUTH_PROXY_SHARED_SECRET`)
 
 ### Activities
 
