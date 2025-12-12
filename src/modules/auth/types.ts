@@ -1,7 +1,9 @@
 import { z } from "zod";
 
 export const handshakePayloadSchema = z.object({
-  student_id: z.string().min(1),
+  student_id: z
+    .string()
+    .regex(/^[0-9A-Za-z]{6,}$/, "Invalid student_id format"),
   name: z.string().min(1),
   email: z.string().email().optional(),
   inschool: z.boolean().optional(),

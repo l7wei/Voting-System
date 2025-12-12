@@ -39,7 +39,11 @@ export async function POST(req: NextRequest) {
     const auth = getAuth();
     const db = getDb();
 
-    const uid = payload.google_uid || `nthu:${payload.student_id}`;
+    const nthuUid = `nthu:${payload.student_id}`;
+    const uid =
+      payload.google_uid && !payload.google_uid.startsWith("nthu:")
+        ? payload.google_uid
+        : nthuUid;
 
     // Ensure user exists in Firebase Auth
     try {
@@ -105,7 +109,7 @@ export async function POST(req: NextRequest) {
 
     response.cookies.set("portal_session", customToken, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
       maxAge: 60 * 60, // 1 hour

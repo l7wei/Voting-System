@@ -19,6 +19,8 @@ load_dotenv()
 
 app = FastAPI(title="NTHUSA Auth Proxy", version="1.0.0")
 
+TRUTHY_VALUES = {"y", "yes", "true", "1", "t"}
+
 
 class OAuthError(HTTPException):
     def __init__(self, detail: str, status_code: int = 400):
@@ -74,11 +76,14 @@ async def forward_to_portal(userinfo: Dict[str, Any]) -> Dict[str, Any]:
     cloud_run_url = env("CLOUD_RUN_CALLBACK")
     shared_secret = env("AUTH_PROXY_SHARED_SECRET")
 
+    def to_bool(value: Any) -> bool:
+        return str(value).strip().lower() in TRUTHY_VALUES
+
     payload = {
         "student_id": userinfo.get("userid") or userinfo.get("student_id"),
         "name": userinfo.get("name") or userinfo.get("username"),
         "email": userinfo.get("email") or userinfo.get("mail"),
-        "inschool": str(userinfo.get("inschool", "")).lower() in {"y", "true", "1"},
+        "inschool": to_bool(userinfo.get("inschool")),
         "auth_provider": "nthu",
     }
 

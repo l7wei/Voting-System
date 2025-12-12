@@ -23,8 +23,14 @@ function buildCredential() {
 
 function getFirebaseAdminApp() {
   if (!admin.apps.length) {
-    const credential = buildCredential();
-    admin.initializeApp({ credential });
+    try {
+      const credential = buildCredential();
+      admin.initializeApp({ credential });
+    } catch (error) {
+      throw new Error(
+        `Failed to initialize Firebase Admin. Check service account envs. ${error}`,
+      );
+    }
   }
 
   return admin.app();
